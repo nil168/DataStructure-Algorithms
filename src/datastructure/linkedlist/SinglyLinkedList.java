@@ -1,11 +1,11 @@
 package datastructure.linkedlist;
 
 public class SinglyLinkedList {
-    private Listnode head;
+    Listnode head;
 
-    private static class Listnode {
-        private int data; // * can be a generic data type
-        private Listnode next; // * reference to the next node of singly linked list
+    static class Listnode {
+        int data; // * can be a generic data type
+        Listnode next; // * reference to the next node of singly linked list
 
         public Listnode(int data){
             this.data = data;
@@ -81,6 +81,7 @@ public class SinglyLinkedList {
     public Listnode deleteAny(int position){
         if(position == 1){
             deleteFirst();
+            // head = head.next;
         } else{
             Listnode current = head;
             Listnode previous = null;
@@ -121,46 +122,40 @@ public class SinglyLinkedList {
         return count;
     }
 
-    public static void main(String[] args) {
-        SinglyLinkedList sll = new SinglyLinkedList();
+    // * search method
+    public boolean search(int key){
+        Listnode current = head;
+        while(current != null){
+            if(current.data == key){
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
 
-        //  * creating the nodes
-        sll.head = new Listnode(11);
-        Listnode second = new Listnode(12);
-        Listnode third = new Listnode(13);
-        Listnode fourth = new Listnode(14);
+    // * Reverse method
+    public void reverse(){
+        Listnode current = head;
+        Listnode previous = null;
+        Listnode next = null;
+        while(current != null){
+            next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
+        }
+        head = previous;
+    }
 
-        //  * connecting the nodes
-        sll.head.next = second; // 11 --> 12
-        second.next = third; // 11 --> 12 --> 13
-        third.next = fourth; // 11 --> 12 --> 13 --> 14
-
-        // * display method call
-        sll.display();
-
-        //  * Length method call
-        System.out.println("\nThe Length of the Linked list is : "+sll.length());
-
-        // * adding new nodes
-        sll.addFirst(10);
-        sll.addFirst(9);
-        sll.addFirst(8);
-        sll.addLast(15);
-        sll.addLast(16);
-        sll.addAny(7,1);
-        sll.addAny(17,9);
-
-        sll.display();
-        System.out.println("\nThe Length of the Linked list is : "+sll.length());
-
-        System.out.println("the deleted first node : "+sll.deleteFirst().data);
-        sll.display();
-
-        System.out.println("\nthe deleted last node : "+sll.deleteLast().data);
-        sll.display();
-
-        System.out.println("\nThe deleted node is : "+sll.deleteAny(9).data);
-        sll.display();
-
+    // * middle finding method
+    public Listnode middle(){
+        Listnode slowPtr = head;
+        Listnode fastPtr = head;
+        while(fastPtr != null && fastPtr.next != null){
+            slowPtr = slowPtr.next;
+            fastPtr = fastPtr.next.next;
+        }
+        return slowPtr;
     }
 }
